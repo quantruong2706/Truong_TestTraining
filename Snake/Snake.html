@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    html, body {
+        margin: 0;
+        display: block;
+
+    }
+    .print{
+        position: fixed;
+        top : 5cm;
+        left: 15cm;
+    }
+    button {
+        height: 0.5cm;
+        width: 0.5cm;
+        overflow: hidden;
+    }
+
+    ul li {
+        list-style: none;
+        height: 0.5cm;
+    }
+
+</style>
+<body>
+<div class="print">
+
+</div>
+</body>
+
+<script>
+    let check = [];
+    setCheck();
+    console.log(check);
+    function setCheck() {
+
+        for (let i = 0; i < 20; i++) {
+            let tmp = [];
+            for (let j = 0; j < 20; j++) {
+                if ((i == 9) && (j == 9)) {
+                    tmp.push(1);
+                } else {
+                    tmp.push(0);
+                }
+            }
+            check.push(tmp);
+        }
+
+    }
+    let indexX = 9;
+    let indexY = 9;
+    let indexEatX = Math.floor(Math.random() * 20);
+    let indexEatY = Math.floor(Math.random() * 20);
+    let HX = 0;
+    let HY = 0;
+    console.log(indexY, indexX);
+    window.addEventListener('keydown', run);
+    setInterval(run2, 1000);
+    function run2() {
+        indexY = indexY + HY;
+        indexX = indexX + HX;
+        printPlay();
+    }
+    function run(e) {
+        const {code, keyCode} = e;
+        if (keyCode == 38) {
+            HX = -1;
+            HY = 0;
+            indexY = indexY + HY;
+            indexX = indexX + HX;
+            printPlay();
+        }
+        if (keyCode == 39) {
+            HX = 0;
+            HY = 1;
+            indexY = indexY + HY;
+            indexX = indexX + HX;
+            printPlay();
+        }
+        if (keyCode == 40) {
+            HX = 1;
+            HY = 0;
+            indexY = indexY + HY;
+            indexX = indexX + HX;
+            printPlay();
+        }
+        if (keyCode == 37) {
+            HX = 0;
+            HY = -1;
+            indexY = indexY + HY;
+            indexX = indexX + HX;
+            printPlay();
+
+        }
+
+    }
+    const maindisplay = document.querySelector(".print");
+    function printPlay() {
+        if (indexX == -1){
+            indexX = 19;
+        }
+        if (indexX == 20){
+            indexX = 0;
+        }
+        if (indexY == -1){
+            indexY = 19;
+        }
+        if (indexY == 20){
+            indexY = 0;
+        }
+        check[indexX][indexY] = 1;
+        maindisplay.innerHTML = ``;
+        for (let i = 0; i < 20; i++) {
+            let list = `<div><ul><li>`
+            for (let j = 0; j < 20; j++) {
+                if ((indexX == i) && (indexY == j)) {
+                    if ((indexX == indexEatX) && (indexY == indexEatY)) {
+                         indexEatX = Math.floor(Math.random() * 20);
+                         indexEatY = Math.floor(Math.random() * 20);
+                    }
+                    list += `<button  style="background: black"  class="btn" data-col ="${j}" data-row ="${i}"></button>`
+                } else {
+                    if ((indexEatX == i) && (indexEatY == j)) {
+                        list += `<button style="background: red"  class="btn" data-col ="${j}" data-row ="${i}"></button>`
+                    } else {
+                        list += `<button class="btn" data-col ="${j}" data-row ="${i}"></button>`
+                    }
+                }
+            }
+            list += `</li></ul></div>`;
+            maindisplay.innerHTML += list;
+        }
+    }
+</script>
+
+</html>
