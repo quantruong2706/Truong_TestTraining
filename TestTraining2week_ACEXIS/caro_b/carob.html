@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    html,
+    body {
+        margin: 0;
+        display: block;
+    }
+
+    button {
+        height: 1.5cm;
+        width: 1.5cm;
+
+    }
+
+    #list {
+        position: fixed;
+        top: 3cm;
+        left: 7cm;
+    }
+
+    td {
+        border: 2px solid #333;
+        height: 100px;
+        width: 100px;
+        text-align: center;
+        font-size: 70px;
+        cursor: pointer;
+    }
+
+    table {
+        border-collapse: collapse;
+        position: absolute;
+        left: 50%;
+        margin-left: -155px;
+        top: 10px;
+    }
+</style>
+<body>
+<form>
+    <input type="text" id="cols" placeholder="Input Size">
+    <input type="text" id="check" placeholder="Enter winning conditions">
+    <input type="submit" id="print">
+</form>
+<div>
+    <div class="list">
+    </div>
+</div>
+
+
+</body>
+<script>
+    const col = document.querySelector("#cols");
+    const checktmp = document.querySelector("#check");
+    var checkList = 0;
+    const list = document.querySelector(".list");
+    const print = document.querySelector("#print");
+    var cols = 0;
+    let check = [];
+    var listBtn;
+    function printBtn(e) {
+        e.preventDefault();
+        cols = parseInt(col.value.toString());
+        checkList = parseInt(checktmp.value.toString());
+        for (let i = 0; i < cols; i++) {
+            let arrTemp = [];
+            for (let j = 0; j < cols; j++) {
+                arrTemp.push(-1);
+            }
+            check.push(arrTemp);
+
+        }
+        console.log(check);
+        let list_tmp = `<table cellpadding='0' cellspacing='0'>`;
+        for (let i = 0; i < cols; i++) {
+
+            list_tmp += `<tr>`;
+            for (let j = 0; j < cols; j++) {
+
+                list_tmp += `<td class="btn" data-col ="${j}" data-row ="${i}"></td>`;
+
+            }
+            list_tmp += `</tr>`;
+
+        }
+        list_tmp += `</table>`;
+        list.innerHTML += list_tmp;
+        listBtn = document.querySelectorAll(".btn");
+
+    }
+
+    print.addEventListener('click', printBtn);
+
+    setInterval(() => {
+        if (listBtn !== undefined) {
+            listBtn.forEach(btn => btn.addEventListener('click', display));
+        }
+    }, 0.1);
+    let dem = 0;
+    function display() {
+        if (this.innerText == ""){
+            var cols = parseInt(this.dataset.col);
+            var rows = parseInt(this.dataset.row);
+            if (dem == 0) {
+                this.innerText = "O";
+                check[cols][rows] = 0;
+                checkVictory(dem, cols, rows);
+                dem = 1;
+                console.log("dem", dem);
+
+            } else {
+                this.innerText = "X";
+                check[this.dataset.col][this.dataset.row] = 1;
+                checkVictory(dem, cols, rows);
+                dem = 0;
+                //   console.log(dem);
+                console.log("dem", dem);
+            }
+        }
+
+    }
+    function checkVictory(dem, x, y) {
+        let size = check.length;
+        let tmp = 1;
+        let checkFirst = true;
+        let checkSecond = true;
+        for (let u = 0; u < size; u++) {
+            if (u != 0) {
+
+                if ((x + u < size) && (y + u < size) && (checkFirst)) {
+                    if (check[x + u][y + u] == dem) {
+                        tmp++;
+                    } else {
+                        checkFirst = false;
+                    }
+                }
+                if ((x - u > -1) && (y - u > -1) && (checkSecond)) {
+                    if (check[x - u][y - u] == dem) {
+                        tmp++;
+                    } else {
+                        checkSecond = false;
+                    }
+                }
+            }
+        }
+        console.log("tmp", tmp);
+        if (tmp == checkList) {
+            let text = "";
+            if(dem == 0){
+                text = "O";
+            }
+            else{
+                text = "X";
+            }
+            alert("Player " + text +" win");
+            location.reload();
+            return;
+        }
+        checkFirst = true;
+        checkSecond = true;
+        tmp = 1;
+        for (let u = 0; u < size; u++) {
+            if (u != 0) {
+                if ((x + u < size) && (y - u > -1) && (checkFirst)) {
+                    if (check[x + u][y - u] == dem) {
+                        tmp++;
+                    } else {
+                        checkFirst = false;
+                    }
+                }
+                if ((x - u > -1) && (y + u > -1) && (checkSecond)) {
+                    if (check[x - u][y + u] == dem) {
+                        tmp++;
+                    } else {
+                        checkSecond = false;
+                    }
+                }
+            }
+        }
+        console.log("tmp", tmp);
+        if (tmp == checkList) {
+            let text = "";
+            if(dem == 0){
+                text = "O";
+            }
+            else{
+                text = "X";
+            }
+            alert("Player " + text +" win");
+            location.reload();
+            return;
+        }
+        tmp = 1;
+        checkFirst = true;
+        checkSecond = true;
+        for (let u = 0; u < size; u++) {
+            if (u != 0) {
+                if ((y + u < size)) {
+                    if (check[x][y + u] == dem) {
+                        tmp++;
+                    } else {
+                        checkFirst = false;
+                    }
+                }
+                if ((y - u > -1)) {
+                    if (check[x][y - u] == dem) {
+                        tmp++;
+                    } else {
+                        checkFirst = false;
+                    }
+                }
+            }
+        }
+        console.log("tmp", tmp);
+        if (tmp == checkList) {
+            let text = "";
+            if(dem == 0){
+                text = "O";
+            }
+            else{
+                text = "X";
+            }
+            alert("Player " + text +" win");
+            location.reload();
+            return;
+        }
+        tmp = 1;
+        checkFirst = true;
+        checkSecond = true;
+        for (let u = 0; u < size; u++) {
+            if (u != 0) {
+                if ((x + u < size)) {
+                    if (check[x + u][y] == dem) {
+                        tmp++;
+                    } else {
+                        checkFirst = false;
+                    }
+                }
+                if ((x - u > -1)) {
+                    if (check[x - u][y] == dem) {
+                        tmp++;
+                    } else {
+                        checkFirst = false;
+                    }
+                }
+            }
+        }
+        console.log("tmp", tmp);
+        if (tmp == checkList ) {
+            let text = "";
+            if(dem == 0){
+                text = "O";
+            }
+            else{
+                text = "X";
+            }
+            alert("Player " + text +" win");
+            location.reload();
+            return;
+        }
+    }
+
+</script>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+<style>
+    td {
+        border: 2px solid #333;
+        height: 100px;
+        width: 100px;
+        text-align: center;
+        font-size: 70px;
+        cursor: pointer;
+    }
+
+    table {
+        border-collapse: collapse;
+        position: absolute;
+        left: 50%;
+        margin-left: -155px;
+        top: 50px;
+    }
+</style>
+
+<body>
+    <table id="main">
+        <tr>
+            <td class="btn" data-col="0" data-row="0"></td>
+            <td class="btn" data-col="0" data-row="1"></td>
+            <td class="btn" data-col="0" data-row="2"></td>
+        </tr>
+        <tr>
+            <td class="btn" data-col="1" data-row="0"></td>
+            <td class="btn" data-col="1" data-row="1"></td>
+            <td class="btn" data-col="1" data-row="2"></td>
+        </tr>
+        <tr>
+            <td class="btn" data-col="2" data-row="0"></td>
+            <td class="btn" data-col="2" data-row="1"></td>
+            <td class="btn" data-col="2" data-row="2"></td>
+        </tr>
+    </table>
+
+</body>
+<script>
+    const btn = document.querySelectorAll('.btn');
+    var check = [];
+    for (let i = 0; i < 3; i++) {
+        let arrTemp = [];
+        for (let j = 0; j < 3; j++) {
+            arrTemp.push(-1);
+        }
+        check.push(arrTemp);
+    }
+
+    var n = 3;
+    var count = 0;
+    function display() {
+        if (this.innerText == "") {
+            var cols = parseInt(this.dataset.col);
+            var rows = parseInt(this.dataset.row);
+            if (count == 0) {
+                this.innerText = "O";
+                check[cols][rows] = 0;
+                check_HumanWin(count, cols, rows, n);
+                count = 1;
+                // console.log("count", count);
+            }
+            else {
+                this.innerText = "X";
+                check[this.dataset.col][this.dataset.row] = 1;
+                check_HumanWin(count, cols, rows, n);
+                count = 0;
+                // console.log("count", count);
+            }
+        }
+    }
+    function check_HumanWin(dem, x, y, size) {
+        // console.log(size);
+        let tmp = 1;
+        let checkFist = true;
+        let checkSecond = true;
+        for (let u = 0; u < size; u++) {
+            if (u != 0) {
+
+                if ((x + u < size) && (y + u < size) && (checkFist)) {
+                    if (check[x + u][y + u] == dem) {
+                        tmp++;
+                    }
+                    else {
+                        checkFist = false;
+                    }
+                }
+                if ((x - u > -1) && (y - u > -1) && (checkSecond)) {
+                    if (check[x - u][y - u] == dem) {
+                        tmp++;
+                    }
+                    else {
+                        checkSecond = false;
+                    }
+                }
+            }
+        }
+        console.log("tmp", tmp);
+        if (tmp == 3) {
+            let text = "";
+            if (dem == 0) {
+                text = "O";
+            }
+            else {
+                text = "X";
+            }
+            alert("Player " + text + " win");
+            location.reload();
+            return;
+        }
+        checkFist = true;
+        checkSecond = true;
+        tmp = 1;
+        for (let u = 0; u < size; u++) {
+            if (u != 0) {
+                if ((x + u < size) && (y - u > -1) && (checkFist)) {
+                    if (check[x + u][y - u] == dem) {
+                        tmp++;
+                    }
+                    else {
+                        checkFist = false;
+                    }
+                }
+                if ((x - u > -1) && (y + u > -1) && (checkSecond)) {
+                    if (check[x - u][y + u] == dem) {
+                        tmp++;
+                    }
+                    else {
+                        checkSecond = false;
+                    }
+                }
+            }
+        }
+        console.log("tmp", tmp);
+        if (tmp == 3) {
+            let text = "";
+            if (dem == 0) {
+                text = "O";
+            }
+            else {
+                text = "X";
+            }
+            alert("Player " + text + " win");
+            location.reload();
+            return;
+        }
+        tmp = 1;
+        checkFist = true;
+        checkSecond = true;
+        for (let u = 0; u < size; u++) {
+            if (u != 0) {
+                if ((y + u < size)) {
+                    if (check[x][y + u] == dem) {
+                        tmp++;
+                    }
+                    else {
+                        checkFist = false;
+                    }
+                }
+                if ((y - u > -1)) {
+                    if (check[x][y - u] == dem) {
+                        tmp++;
+                    }
+                    else {
+                        checkFist = false;
+                    }
+                }
+            }
+        }
+        console.log("tmp", tmp);
+        if (tmp == 3) {
+            let text = "";
+            if (dem == 0) {
+                text = "O";
+            }
+            else {
+                text = "X";
+            }
+            alert("Player " + text + " win");
+            location.reload();
+            return;
+        }
+        tmp = 1;
+        checkFist = true;
+        checkSecond = true;
+        for (let u = 0; u < size; u++) {
+            if (u != 0) {
+                if ((x + u < size)) {
+                    if (check[x + u][y] == dem) {
+                        tmp++;
+                    }
+                    else {
+                        checkFist = false;
+                    }
+                }
+                if ((x - u > -1)) {
+                    if (check[x - u][y] == dem) {
+                        tmp++;
+                    }
+                    else {
+                        checkFist = false;
+                    }
+                }
+            }
+        }
+        // console.log("tmp", tmp);
+        if (tmp == 3) {
+            let text = "";
+            if (dem == 0) {
+                text = "O";
+            }
+            else {
+                text = "X";
+            }
+            alert("Player " + text + " win");
+            location.reload();
+            return;
+        }
+    }
+ 
+    btn.forEach(btnclick => btnclick.addEventListener('click', display));
+</script>
+
+</html>
